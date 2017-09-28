@@ -21,11 +21,11 @@
                 
                 var msg = $('#message').val();
                 if(msg===''){
-                    Materialize.toast('発話を入力してください',200);
+                    Materialize.toast('発話を入力してください',500);
                 }else{
                     generate(msg);
                     $('#message').val('');
-                    Materialize.toast('生成しました',200);
+                    Materialize.toast('生成しました',500);
                 }
             });
 
