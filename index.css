@@ -14,11 +14,11 @@
     height:100%
 }
 
+#ul-log{
+    min-height: 500px;
+}
 
 footer{
-    position: fixed;
-    bottom:0px;
-    width:100%;
 }
 
 a{
