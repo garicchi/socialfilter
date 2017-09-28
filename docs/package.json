@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "jquery": "^3.2.1",
-    "materialize-css": "^0.100.2",
-    "socketio": "^1.0.0"
+    "materialize-css": "^0.100.2"
   }
 }
