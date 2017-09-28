@@ -47,7 +47,7 @@
                 text.text(filterd+' [原文]'+msg);
 
                 var tweet = $('<a>',{
-                    class:'btn-floating btn-small waves-effect waves-light cyan',
+                    class:'btn-floating btn-small waves-effect waves-light cyan link-share',
                     href:'http://twitter.com/intent/tweet?text={text}&url=https://garicchi.github.io/socialfilter/&hashtags=社会性フィルタージェネレーター'
                 });
                 tweet.click(function(){
@@ -68,7 +68,7 @@
                 tweet.append(icon);
 
                 var sound = $('<a>',{
-                    class:'btn-floating btn-small waves-effect waves-light cyan'
+                    class:'btn-floating btn-small waves-effect waves-light cyan link-share'
                 });
                 sound.click(function(){
                     var ssu = new SpeechSynthesisUtterance();
@@ -78,13 +78,13 @@
                     speechSynthesis.speak(ssu);
                 });
                 var icon = $('<i>',{
-                    class:'material-icons'
+                    class:'material-icons icon-share'
                 });
                 icon.text('volume_up');
                 sound.append(icon);
 
                 var divOrigin = $('<div>',{
-                    class:'switch'
+                    class:'switch switch-origin'
                 });
                 var labelOrigin = $('<label>');
                 var inputOrigin = $('<input>',{
@@ -103,10 +103,12 @@
                 var card = $('<div>', {
                     class: 'card-panel'
                 });
+                
                 card.append(text);
+                card.append(divOrigin);
                 card.append(tweet);
                 card.append(sound);
-                card.append(divOrigin);
+                
 
                 var li = $('<li>', {
                     class: 'li-message'

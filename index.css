@@ -11,7 +11,15 @@
 .span-message{
     margin:auto;
     font-size:26px;
-    height:100%
+    height:100%;
+}
+
+.switch-origin{
+    margin-top:20px;
+}
+
+.link-share{
+    margin:5px;
 }
 
 #ul-log{
