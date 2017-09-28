@@ -1,0 +1,21 @@
+#div-connection {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-bottom: 0px;
+    padding: 20px;
+}
+
+.li-message {
+    margin: 20px;
+}
+
+.span-message{
+    margin:auto;
+    font-size:26px;
+    height:100%
+}
+
+#div-waiting{
+    text-align: center;
+}

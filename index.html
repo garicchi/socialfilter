@@ -1,0 +1,164 @@
+<html>
+
+<head>
+    <title>社会性フィルタージェネレーター</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="node_modules/materialize-css/dist/css/materialize.min.css" media="screen,projection"
+    />
+
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+
+    <script type="text/javascript" src="node_modules/materialize-css/dist/js/materialize.min.js"></script>
+
+    <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <script>
+        $(document).ready(function () {
+            $('#div-waiting').hide();
+            var ssu = new SpeechSynthesisUtterance();
+            $('#ip-addr').val('192.168.1.251:3000');
+
+            $('#btn-connect').click(function () {
+                $('#ul-log').empty();
+                var ip = $('#ip-addr').val();
+                console.log(ip);
+                try{
+                    var socket = io.connect('http://' + ip);
+                }catch(e){
+                    Materialize.toast('エラーが発生しました '+JSON.stringify(e), 4000);
+                    logConsole('error', JSON.stringify(e));
+                }
+                socket.on('now', function (data, fn) {
+                    $('#btn-connect').addClass('disabled');
+                    $('#ip-addr').addClass('disabled');
+                    Materialize.toast('サーバーとの接続に成功しました', 4000)
+                    $('#div-waiting').fadeIn(200);
+                    //logConsole('now', JSON.stringify(data));
+                    socket.emit('enter', {
+                        room: 'tsukuba',
+                        device: {
+                            type: 'test-client',
+                            id: 'test',
+                            stateus: 'ok'
+                        }
+                    });
+                });
+
+                socket.on('message', function (data, fn) {
+                    handleMessage(data);
+                });
+
+                socket.on('update', function (data, fn) {
+                    logConsole('update', JSON.stringify(data));
+                });
+
+                socket.on('disconnect', function (data) {
+                    $('#ul-log').empty();
+                    Materialize.toast('サーバーとの接続が切れました', 4000)
+                    logConsole('disconnect', JSON.stringify(data));
+                    $('#btn-connect').removeClass('disabled');
+                    $('#ip-addr').removeClass('disabled');
+                    $('#div-waiting').fadeIn(200);
+
+                });
+            });
+
+
+
+            function logList(type, msg) {
+                
+                
+                var text = $('<span>', {
+                    class: 'cyan-text text-darken-2 span-message'
+                });
+                text.text(msg);
+
+                var card = $('<div>', {
+                    class: 'card-panel'
+                });
+                card.append(text);
+                
+                
+                var li = $('<li>', {
+                    class: 'li-message'
+                });
+                li.append(card);
+
+                $('#ul-log').prepend(li);
+                Materialize.showStaggeredList('#ul-log');
+            }
+
+            function logConsole(type, msg) {
+                console.log('[' + type + '] ' + msg);
+            }
+
+            function handleMessage(msg) {
+                if (msg.cmd === 'start') {
+                    logList('message', '対話を開始します');
+                    logConsole('message', JSON.stringify(msg));
+                    $('#div-waiting').fadeOut(200);
+                }
+
+                if (msg.cmd === 'speak') {
+                    logList('message', msg.value.text);
+                    logConsole('message', JSON.stringify(msg));
+                    ssu.text = msg.value.speak;
+                    ssu.lang = 'ja-JP';
+                    speechSynthesis.speak(ssu);
+                }
+
+                if(msg.cmd==='end'){
+                    $('#ul-log').empty();
+                    $('#div-waiting').fadeIn(200);
+                    
+                }
+
+
+            }
+
+        });
+    </script>
+    
+</head>
+
+<body class="grey lighten-5">
+
+    <nav>
+        <div class="nav-wrapper cyan lighten-2">
+            <a href="#!" class="brand-logo"><i class="material-icons">question_answer</i>Pepper Conversation App</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="mobile.html"><i class="material-icons">volume_up</i></a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="row">
+
+        <ul id='ul-log'>
+        </ul>
+
+        <div id="div-connection" class="row white">
+            <div class="col s10">
+
+                <div class="input-field">
+                    <input placeholder="日頃のうっぷんをどうぞ" id="ip-addr" type="text" class="validate">
+                    <label for="ip-addr">日頃のうっぷんをどうぞ</label>
+                </div>
+            </div>
+            <div class="col s2">
+                <a id="btn-connect" class="btn-floating btn-large waves-effect waves-light cyan tooltipped" data-position="top" data-delay="50" data-tooltip="Connect to Server">
+                            <i class="material-icons">send</i>    
+                    </a>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="div-waiting">
+        <img src='./waiting.png' width="80%" />
+    </div>
+
+
+</body>
+
+</html>
