@@ -10,11 +10,9 @@
 
     <script type="text/javascript" src="node_modules/materialize-css/dist/js/materialize.min.js"></script>
 
-    <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
     <link rel="stylesheet" type="text/css" href="index.css" />
     <script>
         $(document).ready(function () {
-            $('#div-waiting').hide();
             var ssu = new SpeechSynthesisUtterance();
             $('#ip-addr').val('192.168.1.251:3000');
 
@@ -152,10 +150,6 @@
             </div>
         </div>
 
-    </div>
-
-    <div id="div-waiting">
-        <img src='./waiting.png' width="80%" />
     </div>
 
 
