@@ -44,7 +44,12 @@
                 var text = $('<span>', {
                     class: 'cyan-text text-darken-2 span-message'
                 });
-                text.text(filterd+' [原文]'+msg);
+                text.text(filterd);
+
+                var origin= $('<p>',{
+                    class:'p-origin grey-text'
+                });
+                origin.text('[原文] '+msg);
 
                 var tweet = $('<a>',{
                     class:'btn-floating btn-small waves-effect waves-light cyan link-share',
@@ -105,6 +110,7 @@
                 });
                 
                 card.append(text);
+                card.append(origin);
                 card.append(divOrigin);
                 card.append(tweet);
                 card.append(sound);
