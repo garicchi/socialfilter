@@ -1,0 +1,26 @@
+#div-input {
+    
+    margin-bottom: 0px;
+    padding: 20px;
+}
+
+.li-message {
+    margin: 20px;
+}
+
+.span-message{
+    margin:auto;
+    font-size:26px;
+    height:100%
+}
+
+
+footer{
+    position: fixed;
+    bottom:0px;
+    width:100%;
+}
+
+a{
+    color: #00838f
+}

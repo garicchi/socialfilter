@@ -1,0 +1,161 @@
+<html>
+
+<head>
+    <title>社会性フィルタージェネレーター</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <script type="text/javascript" src="tiny_segmenter-0.2.js" charset="UTF-8"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.brand-logo').css('font-size',20);
+            
+            $('#btn-generate').click(function () {
+                
+                var msg = $('#message').val();
+                if(msg===''){
+                    Materialize.toast('発話を入力してください',200);
+                }else{
+                    generate(msg);
+                    $('#message').val('');
+                    Materialize.toast('生成しました',200);
+                }
+            });
+
+            function generate(msg) {
+                var segmenter = new TinySegmenter();
+                var segs = segmenter.segment(msg);
+
+                filterd = [];
+
+                segs.forEach(function(v,i){
+                    var choices = ['にゃん','にゃーん','にゃーーーん','にゃ','にゃ','にゃん','にゃーーーーん'];
+                    var choice = choices[Math.floor(Math.random() * choices.length)];
+                    filterd.push(choice);
+                });
+                filterd = filterd.join(' ');
+                var text = $('<span>', {
+                    class: 'cyan-text text-darken-2 span-message'
+                });
+                text.text(filterd);
+
+                var tweet = $('<a>',{
+                    class:'btn-floating btn-small waves-effect waves-light cyan',
+                    href:'http://twitter.com/intent/tweet?text='+filterd+'&url=https://garicchi.github.io/socialfilter/&hashtags=社会性フィルタージェネレーター'
+                });
+                tweet.click(function(){
+                    window.open(encodeURI(decodeURI(this.href)),'share','width=550,height=450');
+                    return false;
+                });
+
+                var icon = $('<i>',{
+                    class:'fa fa-twitter'
+                });
+                tweet.append(icon);
+
+                var sound = $('<a>',{
+                    class:'btn-floating btn-small waves-effect waves-light cyan'
+                });
+                sound.click(function(){
+                    var ssu = new SpeechSynthesisUtterance();
+
+                    ssu.text = filterd;
+                    ssu.lang = 'ja-JP';
+                    speechSynthesis.speak(ssu);
+                });
+                var icon = $('<i>',{
+                    class:'material-icons'
+                });
+                icon.text('volume_up');
+                sound.append(icon);
+
+                var card = $('<div>', {
+                    class: 'card-panel'
+                });
+                card.append(text);
+                card.append(tweet);
+                card.append(sound);
+
+                var li = $('<li>', {
+                    class: 'li-message'
+                });
+                li.append(card);
+
+                $('#ul-log').prepend(li);
+                Materialize.showStaggeredList('#ul-log');
+            }
+
+        });
+    </script>
+
+</head>
+
+<body class="grey lighten-5">
+
+    <nav>
+        <div class="nav-wrapper cyan lighten-2">
+            <a href="#!" class="brand-logo"><i class="material-icons">report_problem</i>社会性フィルタージェネレーター</a>
+
+        </div>
+    </nav>
+    <div class="row">
+            <div id="div-input" class="row white">
+                    <div class="col s10">
+        
+                        <div class="input-field">
+                            <input placeholder="○○がクソクソのクソ" id="message" type="text" class="validate">
+                            <label for="ip-addr">日頃のうっぷんをどうぞ</label>
+                        </div>
+                    </div>
+                    <div class="col s2">
+                        <a id="btn-generate" class="btn-floating btn-large waves-effect waves-light cyan tooltipped" data-position="top" data-delay="50"
+                            data-tooltip="Generate Social Filter">
+                                    <i class="material-icons">send</i>    
+                            </a>
+        
+                    </div>
+                    
+                </div>
+
+        <ul id='ul-log'>
+        </ul>
+
+        
+
+    </div>
+    <footer class="page-footer cyan">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+                    <p class="grey-text text-lighten-4">音声合成はWebSpeechAPIが動作するブラウザで動作します</p>
+              <p class="grey-text text-lighten-4">Created by <a href="http://twitter.com/garicchi">@garicchi</a></p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+              <h5 class="white-text">ありがとうなツール</h5>
+              <ul>
+                <li><a class="grey-text text-lighten-3" href="http://materializecss.com/">Materialize</a></li>
+                <li><a class="grey-text text-lighten-3" href="http://chasen.org/~taku/software/TinySegmenter/">TinySegmenter</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+          © 2017 Copyright Text
+          <a class="grey-text text-lighten-4 right" href="http://garicchi.com">garicchi.com</a>
+          </div>
+        </div>
+      </footer>
+    
+
+
+</body>
+
+</html>
