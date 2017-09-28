@@ -48,10 +48,17 @@
 
                 var tweet = $('<a>',{
                     class:'btn-floating btn-small waves-effect waves-light cyan',
-                    href:'http://twitter.com/intent/tweet?text='+filterd+'&url=https://garicchi.github.io/socialfilter/&hashtags=社会性フィルタージェネレーター'
+                    href:'http://twitter.com/intent/tweet?text={text}&url=https://garicchi.github.io/socialfilter/&hashtags=社会性フィルタージェネレーター'
                 });
                 tweet.click(function(){
-                    window.open(encodeURI(decodeURI(this.href)),'share','width=550,height=450');
+                    var url = decodeURI(this.href);
+                    var isOrigin = inputOrigin[0].checked;
+                    if(isOrigin){
+                        url = url.replace('{text}',filterd+' [原文]'+msg);
+                    }else{
+                        url = url.replace('{text}',filterd);
+                    }
+                    window.open(encodeURI(url),'share','width=550,height=450');
                     return false;
                 });
 
@@ -76,12 +83,30 @@
                 icon.text('volume_up');
                 sound.append(icon);
 
+                var divOrigin = $('<div>',{
+                    class:'switch'
+                });
+                var labelOrigin = $('<label>');
+                var inputOrigin = $('<input>',{
+                    type:'checkbox'
+                });
+                var spanOrigin = $('<span>',{
+                    class:'lever'
+                });
+                labelOrigin.append('原文を含めない');
+                labelOrigin.append(inputOrigin);
+                labelOrigin.append(spanOrigin);
+                labelOrigin.append('原文を含める');
+                divOrigin.append(labelOrigin);
+                
+
                 var card = $('<div>', {
                     class: 'card-panel'
                 });
                 card.append(text);
                 card.append(tweet);
                 card.append(sound);
+                card.append(divOrigin);
 
                 var li = $('<li>', {
                     class: 'li-message'
